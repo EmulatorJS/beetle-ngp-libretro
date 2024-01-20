@@ -1,6 +1,7 @@
 DEBUG = 0
 FRONTEND_SUPPORTS_RGB565 = 1
 LOAD_FROM_MEMORY = 1
+EMULATORJS_THREADS ?= 0
 
 CORE_DIR := .
 
@@ -338,6 +339,11 @@ else ifneq (,$(filter $(platform), ngc wii wiiu))
 else ifeq ($(platform), emscripten)
    TARGET := $(TARGET_NAME)_libretro_$(platform).bc
    STATIC_LINKING = 1
+   ifeq ($(EMULATORJS_THREADS), 1)
+      LDFLAGS += -pthread
+      CFLAGS += -pthread
+      CXXFLAGS += -pthread
+   endif
 
 #GCW0
 else ifeq ($(platform), gcw0)
